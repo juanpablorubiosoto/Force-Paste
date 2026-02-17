@@ -1,10 +1,29 @@
-set focus_delay to 0.2
-set key_delay to 0.06
-set accent_delay to 0.12
-
 set input to do shell script "pbpaste"
 
 if (input is not missing value) then
+	set front_app to ""
+	tell application "System Events"
+		set front_app to name of first process whose frontmost is true
+	end tell
+	set speed_choice to choose from list {"Fast", "Normal", "Slow"} with title "Force Paste Speed" with prompt "Select typing speed" default items {"Normal"}
+	if speed_choice is false then
+		return
+	end if
+	if front_app is not "" then
+		tell application front_app to activate
+	end if
+	set speed_choice to item 1 of speed_choice
+	if speed_choice is "Fast" then
+		set key_delay to 0.04
+		set word_delay to 0.06
+	else if speed_choice is "Slow" then
+		set key_delay to 0.18
+		set word_delay to 0.14
+	else
+		set key_delay to 0.12
+		set word_delay to 0.1
+	end if
+	set focus_delay to 0.2
 	set input to my normalize_text(input)
 	tell application "System Events"
 		delay focus_delay
@@ -18,8 +37,8 @@ if (input is not missing value) then
 			else
 				keystroke char
 			end if
-			if (id of char) > 127 then
-				delay accent_delay
+			if char is space or char is return or char is tab then
+				delay word_delay
 			else
 				delay key_delay
 			end if
@@ -28,6 +47,20 @@ if (input is not missing value) then
 end if
 
 on normalize_text(t)
+	set combining_acute to (character id 769)
+	set combining_tilde to (character id 771)
+	set t to my replace_text("a" & combining_acute, "a", t)
+	set t to my replace_text("e" & combining_acute, "e", t)
+	set t to my replace_text("i" & combining_acute, "i", t)
+	set t to my replace_text("o" & combining_acute, "o", t)
+	set t to my replace_text("u" & combining_acute, "u", t)
+	set t to my replace_text("A" & combining_acute, "A", t)
+	set t to my replace_text("E" & combining_acute, "E", t)
+	set t to my replace_text("I" & combining_acute, "I", t)
+	set t to my replace_text("O" & combining_acute, "O", t)
+	set t to my replace_text("U" & combining_acute, "U", t)
+	set t to my replace_text("n" & combining_tilde, "n", t)
+	set t to my replace_text("N" & combining_tilde, "N", t)
 	set t to my replace_text("á", "a", t)
 	set t to my replace_text("é", "e", t)
 	set t to my replace_text("í", "i", t)
@@ -42,8 +75,8 @@ on normalize_text(t)
 	set t to my replace_text("Ü", "U", t)
 	set t to my replace_text("ñ", "n", t)
 	set t to my replace_text("Ñ", "N", t)
-	set t to my replace_text("¿", "?", t)
-	set t to my replace_text("¡", "!", t)
+	set t to my replace_text("¿", "", t)
+	set t to my replace_text("¡", "", t)
 	return t
 end normalize_text
 
