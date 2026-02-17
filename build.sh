@@ -4,7 +4,7 @@ INFO_PLIST="$APP_NAME/Contents/Info.plist"
 
 rm -rf "$APP_NAME"
 osacompile -o "$APP_NAME" -x "main.scpt"
-/usr/libexec/PlistBuddy -c "Add NSUIElement String 1" "$INFO_PLIST"
+/usr/libexec/PlistBuddy -c "Add CFBundleIdentifier String com.forcepaste.app" "$INFO_PLIST"
 /usr/libexec/PlistBuddy -c "Set CFBundleIconFile icon" "$INFO_PLIST"
 /usr/libexec/PlistBuddy -c "Add CFBundleVersion String 101" "$INFO_PLIST"
 /usr/libexec/PlistBuddy -c "Add CFBundleShortVersionString String 1.0.1" "$INFO_PLIST"

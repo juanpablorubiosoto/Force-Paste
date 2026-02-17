@@ -3,7 +3,7 @@ set digits to "0123456789"
 
 set input to do shell script "pbpaste"
 
-if (input is not missing value and length of input is less than 250) then
+if (input is not missing value) then
 	tell application "System Events"
 		repeat with char in the characters of input
 			set digit_index to offset of char in digits
