@@ -4,7 +4,7 @@ Small AppleScript app that pastes clipboard contents by simulating keystrokes (u
 
 ## Build
 ```sh
-cd /Users/mariajoseduque/Desktop/JUAN PABLO/GTHB/Force-Paste
+cd /path/to/Force-Paste
 ./build.sh
 ```
 This produces:
